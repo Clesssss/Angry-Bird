@@ -1573,19 +1573,22 @@ function main() {
     head.setup();
 
     //Kiko
-    var sphere = generateSphereVertices(0, 0, 0, 2, 20, 20, 0.043, 0.7, 0.94); //0,0,0,0.5,20,20,20,1,1,1
-    var LeftEye = generateSphereVertices(-0.5, 0.2, 1.4, 0.8, 20, 20, 1, 1, 1);
-    var RightEye = generateSphereVertices(0.5, 0.2, 1.4, 0.8, 20, 20, 1, 1, 1);
-    var leftPupil = generateSphereVertices(-0.5, 0.2, 2, 0.25, 20, 20, 0, 0, 0);
-    var RightPupil = generateSphereVertices(0.5, 0.2, 2, 0.25, 20, 20, 0, 0, 0);
-    var LeftSocket1 = generateSphereVertices(-0.5, 0.2, 1.4, 0.86, 20, 20, 0.89, 0.035, 0.263);
-    var RightSocket1 = generateSphereVertices(0.5, 0.2, 1.4, 0.86, 20, 20, 0.89, 0.035, 0.263);
-    var topBeak = generateEllipticParaboloidVertices(0, -0.8, 4.5, 0.7, 20, 20, 0.7, 1.2, -2, 0.988, 0.976, 0.051);
-    var bottomBeak = generateEllipticParaboloidVertices(0, 0.75, 4, 0.7, 20, 20, 0.7, 0.7, -2, 0.89, 0.875, 0.039);
-    var feather1 = generateCurvedTube(0, 0.6, -0.5, 1, 0.3, 30, 170, 0.043, 0.7, 0.94)
-    var feather2 = generateCurvedTube(0, 0.35, -1.6, 1, 0.3, 30, 160, 0.043, 0.7, 0.94)
-    var backFeather1 = createBoxVertices(0, -0.5, -2.2, 0.1, 0.3, 0.7, 0.3, 0.027, 0.086, 0.271);
-    var backFeather2 = createBoxVertices(0, 1, -2, 0.1, 0.3, 0.7, -0.7, 0.027, 0.086, 0.271);
+
+    var scaling_blue = 0.7;
+
+    var sphere = generateSphereVertices(0*scaling_blue, 0*scaling_blue, 0*scaling_blue, 2*scaling_blue, 20, 20, 0.043, 0.7, 0.94); //0,0,0,0.5,20,20,20,1,1,1
+    var LeftEye = generateSphereVertices(-0.5*scaling_blue, 0.2*scaling_blue, 1.4*scaling_blue, 0.8*scaling_blue, 20, 20, 1, 1, 1);
+    var RightEye = generateSphereVertices(0.5*scaling_blue, 0.2*scaling_blue, 1.4*scaling_blue, 0.8*scaling_blue, 20, 20, 1, 1, 1);
+    var leftPupil = generateSphereVertices(-0.5*scaling_blue, 0.2*scaling_blue, 2*scaling_blue, 0.25*scaling_blue, 20, 20, 0, 0, 0);
+    var RightPupil = generateSphereVertices(0.5*scaling_blue, 0.2*scaling_blue, 2*scaling_blue, 0.25*scaling_blue, 20, 20, 0, 0, 0);
+    var LeftSocket1 = generateSphereVertices(-0.5*scaling_blue, 0.2*scaling_blue, 1.4*scaling_blue, 0.86*scaling_blue, 20, 20, 0.89, 0.035, 0.263);
+    var RightSocket1 = generateSphereVertices(0.5*scaling_blue, 0.2*scaling_blue, 1.4*scaling_blue, 0.86*scaling_blue, 20, 20, 0.89, 0.035, 0.263);
+    var topBeak = generateEllipticParaboloidVertices(0*scaling_blue, -0.8*scaling_blue, 4.5*scaling_blue, 0.7, 20, 20, 0.7*scaling_blue, 1.2*scaling_blue, -2*scaling_blue, 0.988, 0.976, 0.051);
+    var bottomBeak = generateEllipticParaboloidVertices(0*scaling_blue, 0.75*scaling_blue, 4*scaling_blue, 0.7, 20, 20, 0.7*scaling_blue, 0.7*scaling_blue, -2*scaling_blue, 0.89, 0.875, 0.039);
+    var feather1 = generateCurvedTube(0*scaling_blue, 0.6*scaling_blue, -0.5*scaling_blue, 1*scaling_blue, 0.3, 30, 170, 0.043, 0.7, 0.94)
+    var feather2 = generateCurvedTube(0*scaling_blue, 0.35*scaling_blue, -1.6*scaling_blue, 1*scaling_blue, 0.3, 30, 160, 0.043, 0.7, 0.94)
+    var backFeather1 = createBoxVertices(0*scaling_blue, -0.5*scaling_blue, -2.2*scaling_blue, 0.1*scaling_blue, 0.3*scaling_blue, 0.7*scaling_blue, 0.3, 0.027, 0.086, 0.271);
+    var backFeather2 = createBoxVertices(0*scaling_blue, 1*scaling_blue, -2*scaling_blue, 0.1*scaling_blue, 0.3*scaling_blue, 0.7*scaling_blue, -0.7*scaling_blue, 0.027, 0.086, 0.271);
 
     var sphere_faces = [
         // 0,1,2
@@ -1788,8 +1791,118 @@ function main() {
     objectS.child.push(object20S);
     objectS.setup();
 
-    var baseRaw = generateBase(100);
-    var base = new MyObject(baseRaw['vertices'], baseRaw['faces'], shader_vertex_source, shader_fragment_source);
+
+    //Enviorment
+    var boxbase = createBoxVertices(25,-3,0,135,3,60,0,0.659, 0.412, 0.071)
+    var boxgrass = createBoxVertices(25,-1,0,135,1,60,0,0.329, 0.961, 0.063)
+    var base = new MyObject(boxbase, indices, shader_vertex_source, shader_fragment_source);
+    var grass = new MyObject(boxgrass, indices, shader_vertex_source, shader_fragment_source);
+
+    var woodblock1v = createBoxVertices(10,2,0,0.6,5,3,0,0.788, 0.51, 0.141)
+    var woodblock1 = new MyObject(woodblock1v,indices, shader_vertex_source,shader_fragment_source)
+
+    var woodblock2v = createBoxVertices(14,2,0,0.6,5,3,0,0.788, 0.51, 0.141)
+    var woodblock2 = new MyObject(woodblock2v,indices, shader_vertex_source,shader_fragment_source)
+    
+    var woodblock3v = createBoxVertices(18,2,0,0.6,5,3,0,0.788, 0.51, 0.141)
+    var woodblock3 = new MyObject(woodblock3v,indices, shader_vertex_source,shader_fragment_source)
+
+    var woodblock4v = createBoxVertices(14,4.8,0,9,0.6,3,0,0.788, 0.51, 0.141)
+    var woodblock4 = new MyObject(woodblock4v,indices, shader_vertex_source,shader_fragment_source)
+
+    var woodblock5v = createBoxVertices(20,5,0,0.6,11,3,0,0.788, 0.51, 0.141)
+    var woodblock5 = new MyObject(woodblock5v,indices, shader_vertex_source,shader_fragment_source)
+
+    var woodblock6v = createBoxVertices(24,5,0,0.6,11,3,0,0.788, 0.51, 0.141)
+    var woodblock6 = new MyObject(woodblock6v,indices, shader_vertex_source,shader_fragment_source)
+    
+    var woodblock7v = createBoxVertices(28,5,0,0.6,11,3,0,0.788, 0.51, 0.141)
+    var woodblock7 = new MyObject(woodblock7v,indices, shader_vertex_source,shader_fragment_source)
+
+    var woodblock8v = createBoxVertices(24,10.5,0,9,0.6,3,0,0.788, 0.51, 0.141)
+    var woodblock8 = new MyObject(woodblock8v,indices, shader_vertex_source,shader_fragment_source)
+
+    var woodblock9v = createBoxVertices(22,13,0,0.6,5,3,0,0.788, 0.51, 0.141)
+    var woodblock9 = new MyObject(woodblock9v,indices, shader_vertex_source,shader_fragment_source)
+
+    var woodblock10v = createBoxVertices(26,13,0,0.6,5,3,0,0.788, 0.51, 0.141)
+    var woodblock10 = new MyObject(woodblock10v,indices, shader_vertex_source,shader_fragment_source)
+
+    var woodblock11v = createBoxVertices(24,15.5,0,6,0.6,3,0,0.788, 0.51, 0.141)
+    var woodblock11 = new MyObject(woodblock11v,indices, shader_vertex_source,shader_fragment_source)
+
+    var dirtblock1v = createBoxVertices(39,3,0,12,7,8,0,0.271, 0.173, 0.09)
+    var dirtblock = new MyObject(dirtblock1v,indices, shader_vertex_source,shader_fragment_source)
+
+    var dirtblock2v = createBoxVertices(51,6,0,12,13,8,0,0.271, 0.173, 0.09)
+    var dirtblock2 = new MyObject(dirtblock2v,indices, shader_vertex_source,shader_fragment_source)
+
+    var glassblock1v = createBoxVertices(11,6.1,0,2,2,5,0,0.447, 0.812, 1)
+    var glassblock = new MyObject(glassblock1v,indices, shader_vertex_source,shader_fragment_source)
+    var glassblock2v = createBoxVertices(14,6.1,0,2,2,5,0,0.447, 0.812, 1)
+    var glassblock2 = new MyObject(glassblock2v,indices, shader_vertex_source,shader_fragment_source)
+    var glassblock3v = createBoxVertices(17,6.1,0,2,2,5,0,0.447, 0.812, 1)
+    var glassblock3 = new MyObject(glassblock3v,indices, shader_vertex_source,shader_fragment_source)
+    var glassblock4v = createBoxVertices(14,8,0,6,2,5,0,0.447, 0.812, 0.85)
+    var glassblock4 = new MyObject(glassblock4v,indices, shader_vertex_source,shader_fragment_source)
+    var glassblock5v = createBoxVertices(12.5,10,0,2,2,5,0,0.447, 0.812, 1)
+    var glassblock5 = new MyObject(glassblock5v,indices, shader_vertex_source,shader_fragment_source)
+    var glassblock6v = createBoxVertices(15.5,10,0,2,2,5,0,0.447, 0.812, 1)
+    var glassblock6 = new MyObject(glassblock6v,indices, shader_vertex_source,shader_fragment_source)
+
+    var stoneblock1v = createBoxVertices(34,10,0,0.8,10,3,0,0.722, 0.722, 0.722)
+    var stoneblock = new MyObject(stoneblock1v,indices, shader_vertex_source,shader_fragment_source)
+    var stoneblock2v = createBoxVertices(36,10,0,0.8,10,3,0,0.722, 0.722, 0.722)
+    var stoneblock2 = new MyObject(stoneblock2v,indices, shader_vertex_source,shader_fragment_source)
+
+    var glassblock7v = createBoxVertices(42,10,0,0.8,10,3,0,0.447, 0.812, 1)
+    var glassblock7 = new MyObject(glassblock7v,indices, shader_vertex_source,shader_fragment_source)
+    var glassblock8v = createBoxVertices(44,10,0,0.8,10,3,0,0.447, 0.812, 1)
+    var glassblock8 = new MyObject(glassblock8v,indices, shader_vertex_source,shader_fragment_source)
+
+    var stoneblock3v = createBoxVertices(39,15.8,0,12,1.6,3,0,0.722, 0.722, 0.722)
+    var stoneblock3 = new MyObject(stoneblock3v,indices, shader_vertex_source,shader_fragment_source)
+    var stoneblock4v = createBoxVertices(46,18,0,0.8,11,3,0,0.722, 0.722, 0.722)
+    var stoneblock4 = new MyObject(stoneblock4v,indices, shader_vertex_source,shader_fragment_source)
+    var stoneblock5v = createBoxVertices(48,18,0,0.8,11,3,0,0.722, 0.722, 0.722)
+    var stoneblock5 = new MyObject(stoneblock5v,indices, shader_vertex_source,shader_fragment_source)
+    var stoneblock6v = createBoxVertices(54,18,0,0.8,11,3,0,0.722, 0.722, 0.722)
+    var stoneblock6 = new MyObject(stoneblock6v,indices, shader_vertex_source,shader_fragment_source)
+    var stoneblock7v = createBoxVertices(56,18,0,0.8,11,3,0,0.722, 0.722, 0.722)
+    var stoneblock7 = new MyObject(stoneblock7v,indices, shader_vertex_source,shader_fragment_source)
+    var stoneblock8v = createBoxVertices(51,24,0,11,1.2,3,0,0.722, 0.722, 0.722)
+    var stoneblock8 = new MyObject(stoneblock8v,indices, shader_vertex_source,shader_fragment_source)
+
+    base.child.push(grass)
+    base.child.push(woodblock1)
+    base.child.push(woodblock2)
+    base.child.push(woodblock3)
+    base.child.push(woodblock4)
+    base.child.push(woodblock5)
+    base.child.push(woodblock6)
+    base.child.push(woodblock7)
+    base.child.push(woodblock8)
+    base.child.push(woodblock9)
+    base.child.push(woodblock10)
+    base.child.push(woodblock11)
+    base.child.push(dirtblock)
+    base.child.push(dirtblock2)
+    base.child.push(glassblock)
+    base.child.push(glassblock2)
+    base.child.push(glassblock3)
+    base.child.push(glassblock4)
+    base.child.push(glassblock5)
+    base.child.push(glassblock6)
+    base.child.push(stoneblock)
+    base.child.push(stoneblock2)
+    base.child.push(glassblock7)
+    base.child.push(glassblock8)
+    base.child.push(stoneblock3)
+    base.child.push(stoneblock4)
+    base.child.push(stoneblock5)
+    base.child.push(stoneblock6)
+    base.child.push(stoneblock7)
+    base.child.push(stoneblock8)
     base.setup();
 
     /*========================= DRAWING ========================= */
@@ -1799,15 +1912,18 @@ function main() {
     GL.enable(GL.DEPTH_TEST);
     GL.depthFunc(GL.LEQUAL);
 
-    
+    LIBS.translateZ(VIEW_MATRIX,-5)
 
     var prev_time = 0;
+    var cameraX = 0;
+    var cameraY = 0;
     var animate = function (time) {
 
         GL.viewport(0, 0, CANVAS.width, CANVAS.height);
         GL.clear(GL.COLOR_BUFFER_BIT | GL.D_BUFFER_BIT);
         var dt = time - prev_time;
         // console.log(dt);
+        console.log(time)
 
         if (!drag) {
             dX *= FRICTION;
@@ -1819,8 +1935,11 @@ function main() {
         
 
         // Richard 
-        LIBS.rotateY(MODEL_MATRIX4, THETA);
-        LIBS.rotateX(MODEL_MATRIX4, ALPHA);
+        MODEL_MATRIX4 = LIBS.get_I4();
+        //LIBS.rotateY(MODEL_MATRIX4, THETA);
+        //LIBS.rotateX(MODEL_MATRIX4, ALPHA);
+        LIBS.translateY(MODEL_MATRIX4, 13.7);
+        LIBS.translateX(MODEL_MATRIX4, 51);
         head.MODEL_MATRIX = MODEL_MATRIX4;
         head.render(VIEW_MATRIX, PROJECTION_MATRIX);
         rightEar.MODEL_MATRIX = MODEL_MATRIX4;
@@ -1833,15 +1952,21 @@ function main() {
 
         // Kiko
         MODEL_MATRIX2 = LIBS.get_I4();
-        LIBS.rotateY(MODEL_MATRIX2, THETA);
-        LIBS.rotateX(MODEL_MATRIX2, ALPHA);
-        LIBS.translateX(MODEL_MATRIX2, 4);
+        //LIBS.rotateY(MODEL_MATRIX2, THETA);
+        //LIBS.rotateX(MODEL_MATRIX2, ALPHA);
+        LIBS.translateX(MODEL_MATRIX2, -33);
+        LIBS.translateY(MODEL_MATRIX2, 1);
+
+        LIBS.rotateY(MODEL_MATRIX2, 1.62);
 
         MODEL_MATRIX3 = LIBS.get_I4();
         LIBS.rotateZ(MODEL_MATRIX3, 3.14);
-        LIBS.rotateY(MODEL_MATRIX3, THETA);
-        LIBS.rotateX(MODEL_MATRIX3, ALPHA);
-        LIBS.translateX(MODEL_MATRIX3, 4);
+        //LIBS.rotateY(MODEL_MATRIX3, THETA);
+        //LIBS.rotateX(MODEL_MATRIX3, ALPHA);
+        LIBS.translateX(MODEL_MATRIX3, -33);
+        LIBS.translateY(MODEL_MATRIX3, 1);
+
+        LIBS.rotateY(MODEL_MATRIX3, 1.62)
    
         object.MODEL_MATRIX = MODEL_MATRIX2;
         object2.MODEL_MATRIX = MODEL_MATRIX2;
@@ -1863,9 +1988,14 @@ function main() {
         
         //head
         MODEL_MATRIX = LIBS.get_I4();
-        LIBS.rotateY(MODEL_MATRIX, THETA);
-        LIBS.rotateX(MODEL_MATRIX, ALPHA);
-        LIBS.translateX(MODEL_MATRIX, -4);
+        //LIBS.rotateY(MODEL_MATRIX, THETA);
+        //LIBS.rotateX(MODEL_MATRIX, ALPHA);
+        LIBS.translateX(MODEL_MATRIX, -38);
+        LIBS.translateZ(MODEL_MATRIX, -5);
+        LIBS.translateY(MODEL_MATRIX, 4);
+        LIBS.translateY(MODEL_MATRIX4, 10);
+
+        LIBS.rotateY(MODEL_MATRIX,1.62)
              
         objectS.MODEL_MATRIX = MODEL_MATRIX;
         object2S.MODEL_MATRIX = MODEL_MATRIX;
@@ -1890,17 +2020,21 @@ function main() {
 
         // Environment
         MODEL_MATRIX5 = LIBS.get_I4();
-        LIBS.translateX(MODEL_MATRIX5,-10);
-        LIBS.translateY(MODEL_MATRIX5, -3);
+    
         base.MODEL_MATRIX = MODEL_MATRIX5;
+        //LIBS.rotateY(MODEL_MATRIX5, THETA);
+        //LIBS.rotateX(MODEL_MATRIX5, ALPHA);
 
-
+        //View matrix
         base.render(VIEW_MATRIX, PROJECTION_MATRIX);
+
+        LIBS.rotateY(VIEW_MATRIX, THETA/100);
+        LIBS.rotateX(VIEW_MATRIX, ALPHA/100);
 
         // Combination Transformation (Translation & Rotation)
         if (time >= 1000 && time < 3000){
-            LIBS.rotateX(MODEL_MATRIX4, - LIBS.degToRad(15) * dt /10);
-            LIBS.translateY(MODEL_MATRIX4, dt / 1000);
+            LIBS.rotateX(MODEL_MATRIX, - LIBS.degToRad(15) * dt /10);
+            LIBS.translateY(MODEL_MATRIX, dt / 1000);
 
         } else if (time >= 3000 && time < 5000){
             LIBS.rotateX(MODEL_MATRIX4, LIBS.degToRad(15) * dt / 10);
@@ -1944,6 +2078,41 @@ function main() {
         
 
         // console.log(time);
+
+        //CAMERA MOVEMENTS (NOT ROTATION)
+
+        document.addEventListener('keydown', function(event) {
+            switch (event.key) {
+                case 'ArrowUp':
+                    console.log('Up arrow key pressed');
+                    LIBS.translateY(VIEW_MATRIX, -0.0005);
+                    break;
+                case 'ArrowDown':
+                    console.log('Down arrow key pressed');
+                    LIBS.translateY(VIEW_MATRIX, 0.0005);
+                    break;
+                case 'ArrowLeft':
+                    console.log('Left arrow key pressed');
+                    LIBS.translateX(VIEW_MATRIX, 0.0005);
+                    break;
+                case 'ArrowRight':
+                    console.log('Right arrow key pressed');
+                    LIBS.translateX(VIEW_MATRIX, -0.0005);
+                    break;
+                case 'w':
+                    console.log('W key pressed');
+                    LIBS.translateZ(VIEW_MATRIX, -0.0005);
+                    break;
+                case 's':
+                    console.log('S key pressed');
+                    LIBS.translateZ(VIEW_MATRIX, 0.0005);
+                    break;
+                default:
+                    console.log('Other key pressed:', event.key);
+                    break;
+            }
+        });        
+
         GL.flush();
         prev_time = time;
 
