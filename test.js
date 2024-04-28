@@ -928,8 +928,8 @@ function generateBottomBeakVertices(radius, sectorCount, stackCount) {
             y = newY;
             z = newZ;
 
-            y -= 1.85;
-            z += 6.9;
+            y += -1.85+2.6;
+            z += 6.9-5;
 
             vertices.push(x);
             vertices.push(y);
@@ -957,6 +957,7 @@ function generateBottomBeakVertices(radius, sectorCount, stackCount) {
     }
     return vertices;
 }
+
 function generateEyeBallVertices(radius, sectorCount, stackCount, offsetX, offsetY, offsetZ) {
     let vertices = [];
     let normals = [];
@@ -1162,8 +1163,8 @@ function generateBodyVertices(radius, sectorCount, stackCount) {
             x = xy * Math.cos(sectorAngle);             // r * cos(u) * cos(v)
             y = xy * Math.sin(sectorAngle);             // r * cos(u) * sin(v)
 
-            y -= 2.6;
-            z += 5;
+            y -= 0;
+            z += 0;
             vertices.push(x);
             vertices.push(y);
             vertices.push(z);
@@ -1225,8 +1226,8 @@ function generateUpperBeakVertices(radius, sectorCount, stackCount) {
             y = newY;
             z = newZ;
 
-            y -= 1;
-            z += 7.3;
+            y += (-1+2.6);
+            z += (7.3-5);
 
             vertices.push(x);
             vertices.push(y);
@@ -1290,8 +1291,8 @@ function generateEllipticParaboloidVerticesS(radius, sectorCount, stackCount) {
             x = newX;
             y = newY;
             z = newZ;
-
-            z += 6.2;
+            y+=(2.65);
+            z += (6.2-5);
             vertices.push(x);
             vertices.push(y);
             vertices.push(z);
@@ -1743,25 +1744,25 @@ function main() {
         x.pop();
     }
 
-    var objectS = new MyObject(generateEllipticParaboloidVerticesS(1.2, 36, 18), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
-    var object2S = new MyObject(generateBodyVertices(1.8, 36, 8), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
-    var object3S = new MyObject(generateEyeBallVertices(0.4, 36, 18, 0.5, -1, 6.5), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
-    var object4S = new MyObject(generateEyeBallVertices(0.4, 36, 18, -0.5, -1, 6.5), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
-    var object5S = new MyObject(generateEyeBallIrisVertices(0.15, 36, 18, -0.4, -1, 6.87), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
-    var object6S = new MyObject(generateEyeBallIrisVertices(0.15, 36, 18, 0.4, -1, 6.87), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
+   var objectS = new MyObject(generateEllipticParaboloidVerticesS(1.2, 36, 18), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
+    var object2S = new MyObject(generateBodyVertices(1.8, 36, 18), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
+    var object3S = new MyObject(generateEyeBallVertices(0.4, 36, 18, 0.5, -1+2.6, 6.5-5), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
+    var object4S = new MyObject(generateEyeBallVertices(0.4, 36, 18, -0.5, -1+2.6, 6.5-5), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
+    var object5S = new MyObject(generateEyeBallIrisVertices(0.15, 36, 18, -0.4, -1+2.6, 6.87-5), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
+    var object6S = new MyObject(generateEyeBallIrisVertices(0.15, 36, 18, 0.4, -1+2.6, 6.87-5), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
     var object7S = new MyObject(generateUpperBeakVertices(0.5, 36, 18), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
     var object8S = new MyObject(generateBottomBeakVertices(0.86, 36, 18), x, shader_vertex_source, shader_fragment_source);
-    var object9S = new MyObject(generateCheekVertices(0.45, 36, 18, 0.9, -1.65, 6.4), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
-    var object10S = new MyObject(generateCheekVertices(0.45, 36, 18, -0.9, -1.65, 6.4), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
-    var object11S = new MyObject(generateEyelidVertices(0.4, 36, 18, -0.5, -0.89, 6.51), generateBallFaces(18 / 2.5 - 1, 36), shader_vertex_source, shader_fragment_source);
-    var object12S = new MyObject(generateEyelidVertices(0.4, 36, 18, 0.5, -0.89, 6.51), generateBallFaces(18 / 2.5 - 1, 36), shader_vertex_source, shader_fragment_source);
-    var object13S = new MyObject(generateParallelogramVertices(0.6, 0.15, 0.1, 0.7, -0.5, 6.57), cube_faces, shader_vertex_source, shader_fragment_source);
-    var object14S = new MyObject(generateParallelogramVertices(0.6, 0.15, 0.1, -0.7, -0.5, 6.57), cube_faces, shader_vertex_source, shader_fragment_source);
-    var featherS = generateCurvedTube(-0.05, -0.7, 5.3, 0.5, 0.15, 30, 170, 0, 0, 0);
-    var feather1S = generateCurvedTube(-0.25, -0.7, 4.8, 0.5, 0.15, 30, 170, 0, 0, 0);
-    var feather2S = generateCurvedTube(0.15, -0.7, 4.8, 0.5, 0.15, 30, 170, 0, 0, 0);
-    var tailFeatherS = generateCurvedTube(0.2, -3.4, 3.6, 1, 0.15, 30, 270, 0, 0, 0);
-    var tailFeather2S = generateCurvedTube(-0.3, -3.4, 3.6, 1, 0.15, 30, 270, 0, 0, 0);
+    var object9S = new MyObject(generateCheekVertices(0.45, 36, 18, 0.9, -1.65+2.6, 6.4-5), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
+    var object10S = new MyObject(generateCheekVertices(0.45, 36, 18, -0.9, -1.65+2.6, 6.4-5), generateBallFaces(18, 36), shader_vertex_source, shader_fragment_source);
+    var object11S = new MyObject(generateEyelidVertices(0.4, 36, 18, -0.5, -0.89+2.6, 6.51-5), generateBallFaces(18 / 2.5 - 1, 36), shader_vertex_source, shader_fragment_source);
+    var object12S = new MyObject(generateEyelidVertices(0.4, 36, 18, 0.5, -0.89+2.6, 6.51-5), generateBallFaces(18 / 2.5 - 1, 36), shader_vertex_source, shader_fragment_source);
+    var object13S = new MyObject(generateParallelogramVertices(0.6, 0.15, 0.1, 0.7, -0.5+2.6, 6.57-5), cube_faces, shader_vertex_source, shader_fragment_source);
+    var object14S = new MyObject(generateParallelogramVertices(0.6, 0.15, 0.1, -0.7, -0.5+2.6, 6.57-5), cube_faces, shader_vertex_source, shader_fragment_source);
+    var featherS = generateCurvedTube(-0.05, -0.7+2.6, 5.3-5, 0.5, 0.15, 30, 170, 0, 0, 0);
+    var feather1S = generateCurvedTube(-0.25, -0.7+2.6, 4.8-5, 0.5, 0.15, 30, 170, 0, 0, 0);
+    var feather2S = generateCurvedTube(0.15, -0.7+2.6, 4.8-5, 0.5, 0.15, 30, 170, 0, 0, 0);
+    var tailFeatherS = generateCurvedTube(0.2, -3.4+2.6, 3.6-5, 1, 0.15, 30, 270, 0, 0, 0);
+    var tailFeather2S = generateCurvedTube(-0.3, -3.4+2.6, 3.6-5, 1, 0.15, 30, 270, 0, 0, 0);
     var object16S = new MyObject(featherS, feather_faces, shader_vertex_source, shader_fragment_source);
     var object17S = new MyObject(feather1S, feather_faces, shader_vertex_source, shader_fragment_source);
     var object18S = new MyObject(feather2S, feather_faces, shader_vertex_source, shader_fragment_source);
