@@ -651,6 +651,32 @@ function generateNose(step) {
 }
 
 // Kiko 
+function generateConeVertices(offsetX, offsetY, offsetZ, radius, stacks, slices, colorX, colorY, colorZ) {
+    var vertices = [];
+    var PI = Math.PI;
+
+    for (var i = 0; i <= stacks; ++i) {
+        var theta = i * PI / stacks;
+        var sinTheta = Math.cos(theta);
+        var cosTheta = Math.cos(theta);
+
+        for (var j = 0; j <= slices; ++j) {
+            var phi = j * 2 * PI / slices;
+            var sinPhi = Math.sin(phi);
+            var cosPhi = Math.cos(phi);
+
+            var x = (cosPhi * sinTheta);
+            var y = (cosTheta);
+            var z = (sinPhi * sinTheta);
+
+            vertices.push((radius * x)+offsetX, (radius * y)+offsetY, (radius * z)+offsetZ);
+            vertices.push(colorX,colorY,colorZ);
+        }
+    }
+
+    return vertices;
+}
+
 function generateSphereVertices(offsetX, offsetY, offsetZ, radius, stacks, slices, colorX, colorY, colorZ) {
     var vertices = [];
     var PI = Math.PI;
@@ -1593,7 +1619,7 @@ function main() {
     var sphere_faces = [
         // 0,1,2
     ]
-    for (let index = 21; index < 441; index++) {
+    for (let index = 21; index < 420; index++) {
         sphere_faces.push(index);
         sphere_faces.push(index + 1);
         sphere_faces.push(index - 21);
@@ -1602,6 +1628,18 @@ function main() {
         sphere_faces.push(index - 21);
         sphere_faces.push(index - 20);
 
+    }
+
+    var cone_faces = [
+    ]
+    for (let index = 231; index < 420; index++) {
+        cone_faces.push(index);
+        cone_faces.push(index+1);
+        cone_faces.push(index-21);
+
+        cone_faces.push(index+1);
+        cone_faces.push(index-21);
+        cone_faces.push(index-20);
     }
     var left_socket_faces = [
 
@@ -1873,6 +1911,86 @@ function main() {
     var stoneblock8v = createBoxVertices(51,24,0,11,1.2,3,0,0.722, 0.722, 0.722)
     var stoneblock8 = new MyObject(stoneblock8v,indices, shader_vertex_source,shader_fragment_source)
 
+    var bush1v = generateSphereVertices(-6,1,-23,3,20,20,0, 0.612, 0.067)
+    var bush1 = new MyObject(bush1v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush2v = generateSphereVertices(-4,4,-23,3,20,20,0, 0.612, 0.067)
+    var bush2 = new MyObject(bush2v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush3v = generateSphereVertices(0,4,-23,3,20,20,0, 0.612, 0.067)
+    var bush3 = new MyObject(bush3v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush4v = generateSphereVertices(2,1,-23,3,20,20,0, 0.612, 0.067)
+    var bush4 = new MyObject(bush4v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush5v = generateSphereVertices(-2,1,-23,3,20,20,0, 0.612, 0.067)
+    var bush5 = new MyObject(bush5v,sphere_faces,shader_vertex_source,shader_fragment_source)
+
+    var bush6v = generateSphereVertices(-6-30,1,23,3,20,20,0, 0.612, 0.067)
+    var bush6 = new MyObject(bush6v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush7v = generateSphereVertices(-4-30,4,23,3,20,20,0, 0.612, 0.067)
+    var bush7 = new MyObject(bush7v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush8v = generateSphereVertices(0-30,4,23,3,20,20,0, 0.612, 0.067)
+    var bush8 = new MyObject(bush8v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush9v = generateSphereVertices(2-30,1,23,3,20,20,0, 0.612, 0.067)
+    var bush9 = new MyObject(bush9v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush10v = generateSphereVertices(-2-30,1,23,3,20,20,0, 0.612, 0.067)
+    var bush10 = new MyObject(bush10v,sphere_faces,shader_vertex_source,shader_fragment_source)
+
+    var bush11v = generateSphereVertices(-6+30,1,23,3,20,20,0, 0.612, 0.067)
+    var bush11 = new MyObject(bush11v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush12v = generateSphereVertices(-4+30,4,23,3,20,20,0, 0.612, 0.067)
+    var bush12 = new MyObject(bush12v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush13v = generateSphereVertices(0+30,4,23,3,20,20,0, 0.612, 0.067)
+    var bush13 = new MyObject(bush13v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush14v = generateSphereVertices(2+30,1,23,3,20,20,0, 0.612, 0.067)
+    var bush14 = new MyObject(bush14v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush15v = generateSphereVertices(-2+30,1,23,3,20,20,0, 0.612, 0.067)
+    var bush15 = new MyObject(bush15v,sphere_faces,shader_vertex_source,shader_fragment_source)
+
+    var bush16v = generateSphereVertices(87,4,-19,3,20,20,0, 0.612, 0.067)
+    var bush16 = new MyObject(bush16v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush17v = generateSphereVertices(87,1,-17,3,20,20,0, 0.612, 0.067)
+    var bush17 = new MyObject(bush17v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush18v = generateSphereVertices(87,4,-15,3,20,20,0, 0.612, 0.067)
+    var bush18 = new MyObject(bush18v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush19v = generateSphereVertices(87,1,-21,3,20,20,0, 0.612, 0.067)
+    var bush19 = new MyObject(bush19v,sphere_faces,shader_vertex_source,shader_fragment_source)
+    var bush20v = generateSphereVertices(87,1,-13,3,20,20,0, 0.612, 0.067)
+    var bush20 = new MyObject(bush20v,sphere_faces,shader_vertex_source,shader_fragment_source)
+
+    var cone1v = generateConeVertices(-30,23.5,-12,5.5,20,20,0.09, 0.529, 0.137)
+    var cone1 = new MyObject(cone1v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var cone2v = generateConeVertices(-30,20,-12,7,20,20,0.09, 0.529, 0.137)
+    var cone2 = new MyObject(cone2v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var cone3v = generateConeVertices(-30,16,-12,8.5,20,20,0.09, 0.529, 0.137)
+    var cone3 = new MyObject(cone3v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var log1v = createBoxVertices(-30,4,-12,1,9,1,0,0.388, 0.275, 0.02)
+    var log1 = new MyObject(log1v,indices,shader_vertex_source,shader_fragment_source)
+    
+    var cone4v = generateConeVertices(4,23.5,25,5.5,20,20,0.09, 0.529, 0.137)
+    var cone4 = new MyObject(cone4v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var cone5v = generateConeVertices(4,20,25,7,20,20,0.09, 0.529, 0.137)
+    var cone5 = new MyObject(cone5v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var cone6v = generateConeVertices(4,16,25,8.5,20,20,0.09, 0.529, 0.137)
+    var cone6 = new MyObject(cone6v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var log2v = createBoxVertices(4,4,25,1,9,1,0,0.388, 0.275, 0.02)
+    var log2 = new MyObject(log2v,indices,shader_vertex_source,shader_fragment_source)
+
+    var cone7v = generateConeVertices(78,23.5,22,5.5,20,20,0.09, 0.529, 0.137)
+    var cone7 = new MyObject(cone7v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var cone8v = generateConeVertices(78,20,22,7,20,20,0.09, 0.529, 0.137)
+    var cone8 = new MyObject(cone8v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var cone9v = generateConeVertices(78,16,22,8.5,20,20,0.09, 0.529, 0.137)
+    var cone9 = new MyObject(cone9v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var log3v = createBoxVertices(78,4,22,1,9,1,0,0.388, 0.275, 0.02)
+    var log3 = new MyObject(log3v,indices,shader_vertex_source,shader_fragment_source)
+
+    var cone10v = generateConeVertices(35,23.5,-25,5.5,20,20,0.09, 0.529, 0.137)
+    var cone10 = new MyObject(cone10v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var cone11v = generateConeVertices(35,20,-25,7,20,20,0.09, 0.529, 0.137)
+    var cone11 = new MyObject(cone11v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var cone12v = generateConeVertices(35,16,-25,8.5,20,20,0.09, 0.529, 0.137)
+    var cone12 = new MyObject(cone12v,cone_faces,shader_vertex_source,shader_fragment_source)
+    var log4v = createBoxVertices(35,4,-25,1,9,1,0,0.388, 0.275, 0.02)
+    var log4 = new MyObject(log4v,indices,shader_vertex_source,shader_fragment_source)
+    
     base.child.push(grass)
     base.child.push(woodblock1)
     base.child.push(woodblock2)
@@ -1903,6 +2021,42 @@ function main() {
     base.child.push(stoneblock6)
     base.child.push(stoneblock7)
     base.child.push(stoneblock8)
+    base.child.push(bush1)
+    base.child.push(bush2)
+    base.child.push(bush3)
+    base.child.push(bush4)
+    base.child.push(bush5)
+    base.child.push(bush6)
+    base.child.push(bush7)
+    base.child.push(bush8)
+    base.child.push(bush9)
+    base.child.push(bush10)
+    base.child.push(bush11)
+    base.child.push(bush12)
+    base.child.push(bush13)
+    base.child.push(bush14)
+    base.child.push(bush15)
+    base.child.push(bush16)
+    base.child.push(bush17)
+    base.child.push(bush18)
+    base.child.push(bush19)
+    base.child.push(bush20)
+    base.child.push(cone1)
+    base.child.push(cone2)
+    base.child.push(cone3)
+    base.child.push(log1)
+    base.child.push(cone4)
+    base.child.push(cone5)
+    base.child.push(cone6)
+    base.child.push(log2)
+    base.child.push(cone7)
+    base.child.push(cone8)
+    base.child.push(cone9)
+    base.child.push(log3)
+    base.child.push(cone10)
+    base.child.push(cone11)
+    base.child.push(cone12)
+    base.child.push(log4)
     base.setup();
 
     /*========================= DRAWING ========================= */
@@ -1938,14 +2092,13 @@ function main() {
         LIBS.translateY(MODEL_MATRIX4, 13.65);
         LIBS.translateX(MODEL_MATRIX4, 51);
         head.MODEL_MATRIX = MODEL_MATRIX4;
-        head.render(VIEW_MATRIX, PROJECTION_MATRIX);
         rightEar.MODEL_MATRIX = MODEL_MATRIX4;
         leftEar.MODEL_MATRIX = MODEL_MATRIX4;
         rightEye.MODEL_MATRIX = MODEL_MATRIX4;
         leftEye.MODEL_MATRIX = MODEL_MATRIX4;
         nose.MODEL_MATRIX = MODEL_MATRIX4;
         eyebrow.MODEL_MATRIX = MODEL_MATRIX4;
-        
+        head.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         // Kiko
         MODEL_MATRIX2 = LIBS.get_I4();
@@ -2075,10 +2228,9 @@ function main() {
         }
         // Translate Eye
         
-        else {
-            MODEL_MATRIX4 = LIBS.get_I4();
-        }
-        
+        // else {
+        //     MODEL_MATRIX = LIBS.get_I4();
+        // }
 
         // console.log(time);
 

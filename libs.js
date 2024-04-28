@@ -169,5 +169,40 @@ var LIBS = {
     },
     setPosition: function(m, a, b, c){
         m[12]=a, m[13]=b, m[14]=c;
+    },
+    rotateAlong: function(m, alpha, axis, origin = [0, 0, 0]) {
+      // Rotation of a point in 3 dimensional space by 'alpha'
+      // about an arbitrary axis defined by a line aligned
+      // with a normalized vector 'axis' = (a1, a2, a3)
+      // passing through point 'origin' = (p1, p2, p3)
+      // can be achieved by the following steps:
+
+      // (1) translate space so that the rotation axis passes through the origin
+      LIBS.translateX(m, -origin[0]);
+      LIBS.translateY(m, -origin[1]);
+      LIBS.translateZ(m, -origin[2]);
+
+      // (2) rotate space about the x axis so that the rotation axis lies in the xz plane
+      let a = Math.atan2(axis[1], axis[2]);
+      LIBS.rotateX(m, a);
+
+      // (3) rotate space about the y axis so that the rotation axis lies along the z axis
+      let d = Math.sqrt(axis[1] * axis[1] + axis[2] * axis[2]);
+      let b = Math.atan2(axis[0], d);
+      LIBS.rotateY(m, b);
+
+      // (4) perform the desired rotation by theta about the z axis
+      LIBS.rotateZ(m, alpha);
+
+      // (5) apply the inverse of step (3) and (2)
+      LIBS.rotateY(m, -b);
+      LIBS.rotateX(m, -a);
+
+      // (6) translate back so that the original point is at the origin again
+      LIBS.translateX(m, origin[0]);
+      LIBS.translateY(m, origin[1]);
+      LIBS.translateZ(m, origin[2]);
+
+      return m;
     }
 };
