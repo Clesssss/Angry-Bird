@@ -1819,32 +1819,29 @@ function main() {
         
 
         // Richard 
-        MODEL_MATRIX4 = LIBS.get_I4();
         LIBS.rotateY(MODEL_MATRIX4, THETA);
         LIBS.rotateX(MODEL_MATRIX4, ALPHA);
-        LIBS.translateY(MODEL_MATRIX4, 2);
         head.MODEL_MATRIX = MODEL_MATRIX4;
+        head.render(VIEW_MATRIX, PROJECTION_MATRIX);
         rightEar.MODEL_MATRIX = MODEL_MATRIX4;
         leftEar.MODEL_MATRIX = MODEL_MATRIX4;
         rightEye.MODEL_MATRIX = MODEL_MATRIX4;
         leftEye.MODEL_MATRIX = MODEL_MATRIX4;
         nose.MODEL_MATRIX = MODEL_MATRIX4;
         eyebrow.MODEL_MATRIX = MODEL_MATRIX4;
-        head.render(VIEW_MATRIX, PROJECTION_MATRIX);
+        
 
         // Kiko
         MODEL_MATRIX2 = LIBS.get_I4();
         LIBS.rotateY(MODEL_MATRIX2, THETA);
         LIBS.rotateX(MODEL_MATRIX2, ALPHA);
         LIBS.translateX(MODEL_MATRIX2, 4);
-        LIBS.translateY(MODEL_MATRIX2, 2);
 
         MODEL_MATRIX3 = LIBS.get_I4();
         LIBS.rotateZ(MODEL_MATRIX3, 3.14);
         LIBS.rotateY(MODEL_MATRIX3, THETA);
         LIBS.rotateX(MODEL_MATRIX3, ALPHA);
         LIBS.translateX(MODEL_MATRIX3, 4);
-        LIBS.translateY(MODEL_MATRIX3, 2);
    
         object.MODEL_MATRIX = MODEL_MATRIX2;
         object2.MODEL_MATRIX = MODEL_MATRIX2;
@@ -1869,8 +1866,6 @@ function main() {
         LIBS.rotateY(MODEL_MATRIX, THETA);
         LIBS.rotateX(MODEL_MATRIX, ALPHA);
         LIBS.translateX(MODEL_MATRIX, -4);
-        LIBS.translateZ(MODEL_MATRIX, -10);
-        LIBS.translateY(MODEL_MATRIX4, 10);
              
         objectS.MODEL_MATRIX = MODEL_MATRIX;
         object2S.MODEL_MATRIX = MODEL_MATRIX;
@@ -1902,41 +1897,50 @@ function main() {
 
         base.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
+        // Combination Transformation (Translation & Rotation)
+        if (time >= 1000 && time < 3000){
+            LIBS.rotateX(MODEL_MATRIX4, - LIBS.degToRad(15) * dt /10);
+            LIBS.translateY(MODEL_MATRIX4, dt / 1000);
+
+        } else if (time >= 3000 && time < 5000){
+            LIBS.rotateX(MODEL_MATRIX4, LIBS.degToRad(15) * dt / 10);
+            LIBS.translateY(MODEL_MATRIX4, - dt / 1000);
+
+        }
+        // Rotate Arbitrary Axis
+
         
+        else if (time >= 6000 && time < 10600){
+            var temp = LIBS.get_I4();
+            
+            LIBS.translateX(temp, -2);
+            LIBS.translateY(temp, -2);
+            MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
+            temp = LIBS.get_I4();
+            LIBS.rotateX(temp, LIBS.degToRad(15) * dt / 100);
+            MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
+            LIBS.rotateY(temp, LIBS.degToRad(15) * dt / 100);
+            MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
+            LIBS.rotateZ(temp, LIBS.degToRad(15) * dt / 100);
+            MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
+            temp = LIBS.get_I4();
+            
+            LIBS.translateX(temp, 2);
+            LIBS.translateY(temp, 2);
+            MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
 
-        // // Combination Transformation (Translation & Rotation)
-        // if (time >= 1000 && time < 3000){
-        //     LIBS.rotateX(MODEL_MATRIX, - LIBS.degToRad(15) * dt /10);
-        //     LIBS.translateY(MODEL_MATRIX, dt / 1000);
-
-        // } else if (time >= 3000 && time < 5000){
-        //     LIBS.rotateX(MODEL_MATRIX, LIBS.degToRad(15) * dt / 10);
-        //     LIBS.translateY(MODEL_MATRIX, - dt / 1000);
-
-        // }
-        // // Rotate Arbitrary Axis
-        // else if (time >= 6000 && time < 10600){
-        //     var temp = LIBS.get_I4();
-        //     LIBS.translateY(temp, -2);
-        //     MODEL_MATRIX = LIBS.multiply(MODEL_MATRIX, temp);
-        //     temp = LIBS.get_I4();
-        //     LIBS.rotateX(temp, - LIBS.degToRad(15) * dt / 100);
-        //     MODEL_MATRIX = LIBS.multiply(MODEL_MATRIX, temp);
-        //     temp = LIBS.get_I4();
-        //     LIBS.translateY(temp, 2);
-        //     MODEL_MATRIX = LIBS.multiply(MODEL_MATRIX, temp);
-        // } 
-        // // Scaling
-        // else if (time >=12000 && time < 14000){
-        //     MODEL_MATRIX = LIBS.scale(MODEL_MATRIX, (dt / 2000 + 1) * 1);
-        // } else if (time >= 14000 && time < 16000){
-        //     MODEL_MATRIX = LIBS.scale(MODEL_MATRIX, 1 / ((dt / 2000 + 1) * 1));
-        // }
-        // // Translate Eye
+        } 
+        // Scaling
+        else if (time >=12000 && time < 14000){
+            MODEL_MATRIX4 = LIBS.scale(MODEL_MATRIX4, (dt / 2000 + 1) * 1);
+        } else if (time >= 14000 && time < 16000){
+            MODEL_MATRIX4 = LIBS.scale(MODEL_MATRIX4, 1 / ((dt / 2000 + 1) * 1));
+        }
+        // Translate Eye
         
-        // else {
-        //     MODEL_MATRIX = LIBS.get_I4();
-        // }
+        else {
+            MODEL_MATRIX4 = LIBS.get_I4();
+        }
         
 
         // console.log(time);
