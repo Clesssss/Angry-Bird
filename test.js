@@ -562,7 +562,7 @@ function generateNose(step) {
     for (var i = 0; i <= step; i++) {
         var x = 0.13 * Math.cos((i / step) * 2 * Math.PI - Math.PI);
         var y = 0.19 * Math.sin((i / step) * 2 * Math.PI - Math.PI);
-        var z = 1.5001;
+        var z = 1.501;
 
         x-= 0.23;
         vertices.push(x, y, z, 0.08, 0.22, 0.06);
@@ -580,7 +580,7 @@ function generateNose(step) {
     for (var i = 0; i <= step; i++) {
         var x = 0.135 * Math.cos((i / step) * 2 * Math.PI - Math.PI);
         var y = 0.16 * Math.sin((i / step) * 2 * Math.PI - Math.PI);
-        var z = 1.5001;
+        var z = 1.501;
 
         x += 0.23;
         vertices.push(x, y, z, 0.08, 0.22, 0.06);
@@ -1541,7 +1541,7 @@ function main() {
     var MODEL_MATRIX8 = LIBS.get_I4();
     var MODEL_MATRIX9 = LIBS.get_I4();
 
-    LIBS.translateZ(VIEW_MATRIX, -35);
+    LIBS.translateZ(VIEW_MATRIX, -70);
 
     // Richard 
     var headRaw = generateEllipsoid(1.35, 1.16, 1.1, 100, 100, 0.43, 0.89, 0.28, 0, 0, 0);
@@ -1915,8 +1915,6 @@ function main() {
     LIBS.translateZ(VIEW_MATRIX,-5)
 
     var prev_time = 0;
-    var cameraX = 0;
-    var cameraY = 0;
     var animate = function (time) {
 
         GL.viewport(0, 0, CANVAS.width, CANVAS.height);
@@ -1935,10 +1933,9 @@ function main() {
         
 
         // Richard 
-        MODEL_MATRIX4 = LIBS.get_I4();
         //LIBS.rotateY(MODEL_MATRIX4, THETA);
         //LIBS.rotateX(MODEL_MATRIX4, ALPHA);
-        LIBS.translateY(MODEL_MATRIX4, 13.7);
+        LIBS.translateY(MODEL_MATRIX4, 13.65);
         LIBS.translateX(MODEL_MATRIX4, 51);
         head.MODEL_MATRIX = MODEL_MATRIX4;
         head.render(VIEW_MATRIX, PROJECTION_MATRIX);
@@ -1993,7 +1990,6 @@ function main() {
         LIBS.translateX(MODEL_MATRIX, -38);
         LIBS.translateZ(MODEL_MATRIX, -5);
         LIBS.translateY(MODEL_MATRIX, 4);
-        LIBS.translateY(MODEL_MATRIX4, 10);
 
         LIBS.rotateY(MODEL_MATRIX,1.62)
              
@@ -2028,27 +2024,30 @@ function main() {
         //View matrix
         base.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
-        LIBS.rotateY(VIEW_MATRIX, THETA/100);
-        LIBS.rotateX(VIEW_MATRIX, ALPHA/100);
+        LIBS.rotateY(VIEW_MATRIX, THETA/200);
+        LIBS.rotateX(VIEW_MATRIX, ALPHA/200);
 
         // Combination Transformation (Translation & Rotation)
         if (time >= 1000 && time < 3000){
-            LIBS.rotateX(MODEL_MATRIX, - LIBS.degToRad(15) * dt /10);
-            LIBS.translateY(MODEL_MATRIX, dt / 1000);
+            LIBS.translateY(MODEL_MATRIX4, -13.65);
+            LIBS.translateX(MODEL_MATRIX4, -51);
+            LIBS.rotateX(MODEL_MATRIX4, - LIBS.degToRad(15) * dt /10);
+            LIBS.translateY(MODEL_MATRIX4, dt / 1000);
+            
 
         } else if (time >= 3000 && time < 5000){
+            LIBS.translateY(MODEL_MATRIX4, -13.65);
+            LIBS.translateX(MODEL_MATRIX4, -51);
             LIBS.rotateX(MODEL_MATRIX4, LIBS.degToRad(15) * dt / 10);
             LIBS.translateY(MODEL_MATRIX4, - dt / 1000);
 
         }
         // Rotate Arbitrary Axis
-
-        
         else if (time >= 6000 && time < 10600){
             var temp = LIBS.get_I4();
             
-            LIBS.translateX(temp, -2);
-            LIBS.translateY(temp, -2);
+            LIBS.translateX(MODEL_MATRIX4, -13.65);
+            LIBS.translateY(MODEL_MATRIX4, -51);
             MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
             temp = LIBS.get_I4();
             LIBS.rotateX(temp, LIBS.degToRad(15) * dt / 100);
@@ -2059,16 +2058,20 @@ function main() {
             MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
             temp = LIBS.get_I4();
             
-            LIBS.translateX(temp, 2);
-            LIBS.translateY(temp, 2);
+            LIBS.translateX(MODEL_MATRIX4, 13.65);
+            LIBS.translateY(MODEL_MATRIX4, 51);
             MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
 
         } 
         // Scaling
         else if (time >=12000 && time < 14000){
-            MODEL_MATRIX4 = LIBS.scale(MODEL_MATRIX4, (dt / 2000 + 1) * 1);
+            LIBS.translateY(MODEL_MATRIX4, -13.65);
+            LIBS.translateX(MODEL_MATRIX4, -51);
+            MODEL_MATRIX4 = LIBS.scale(MODEL_MATRIX4, (dt / 5000 + 1) * 1);
         } else if (time >= 14000 && time < 16000){
-            MODEL_MATRIX4 = LIBS.scale(MODEL_MATRIX4, 1 / ((dt / 2000 + 1) * 1));
+            LIBS.translateY(MODEL_MATRIX4, -13.65);
+            LIBS.translateX(MODEL_MATRIX4, -51);    
+            MODEL_MATRIX4 = LIBS.scale(MODEL_MATRIX4, 1 / ((dt / 5000 + 1) * 1));
         }
         // Translate Eye
         
