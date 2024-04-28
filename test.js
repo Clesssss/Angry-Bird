@@ -461,17 +461,17 @@ function generateLeftEar(step, stack) {
 }
 function generateRightEye(step, stack){
     // 285 300
-    var vertices = [];
-    var faces = [];
-  
+    var whiteVertices = [];
+    var whiteFaces = [];
+    var blackVertices = [];
+    var blackFaces = [];
     
     var whitePartRaw = generateEllipsoid(0.285, 0.3, 0.2, step, stack, 1, 1, 1, 0.75, 0.035, 0.95);
     var blackPartRaw = generateEllipsoid(0.07, 0.07, 0.07, step, stack, 0, 0, 0, 0.85, 0, 1.12);
 
-
-    vertices = vertices.concat(whitePartRaw['vertices'], blackPartRaw['vertices']);
-
-    // console.log(whitePartRaw['vertices'].length);
+    whiteVertices = whitePartRaw['vertices'];
+    blackVertices = blackPartRaw['vertices'];
+  
     for (var i = 0; i <= stack; i++) {
         for (var j = 0; j < step; j++) {
             var a = i * step + j;
@@ -479,32 +479,35 @@ function generateRightEye(step, stack){
             var c = a + step;
             var d = a + step + 1;
             // console.log(a + " " + b + " " + c + " " + d);
-            faces.push(a, b, d, a, d, c);
+            whiteFaces.push(a, b, d, a, d, c);
         }
     }
     for (var i = 0; i <= stack; i++) {
         for (var j = 0; j < step; j++) {
-            var a = i * step + j + (whitePartRaw['vertices'].length / 6) + 1; 
+            var a = i * step + j + 1; 
             var b = a + 1;
             var c = a + step;
             var d = a + step + 1;
             // console.log(a + " " + b + " " + c + " " + d);
-            faces.push(a, b, d, a, d, c);
+            blackFaces.push(a, b, d, a, d, c);
         }
     }
 
-    return { "vertices": vertices, "faces": faces };
+    return { "whiteVertices": whiteVertices, "blackVertices": blackVertices, "whiteFaces": whiteFaces, "blackFaces": blackFaces };
 }
 function generateLeftEye(step, stack) {
     // 285 300
-    var vertices = [];
-    var faces = [];
+    var whiteVertices = [];
+    var whiteFaces = [];
+    var blackVertices = [];
+    var blackFaces = [];
+
     var whitePartRaw = generateEllipsoid(0.285, 0.3, 0.2, step, stack, 1, 1, 1, -0.8, -0.035, 0.95);
     var blackPartRaw = generateEllipsoid(0.07, 0.07, 0.07, step, stack, 0, 0, 0, -0.75, 0, 1.12);
 
+    whiteVertices = whitePartRaw['vertices'];
+    blackVertices = blackPartRaw['vertices'];
 
-    vertices = vertices.concat(whitePartRaw['vertices'], blackPartRaw['vertices']);
-    
     for (var i = 0; i <= stack; i++) {
         for (var j = 0; j < step; j++) {
             var a = i * step + j;
@@ -512,21 +515,21 @@ function generateLeftEye(step, stack) {
             var c = a + step;
             var d = a + step + 1;
             // console.log(a + " " + b + " " + c + " " + d);
-            faces.push(a, b, d, a, d, c);
+            whiteFaces.push(a, b, d, a, d, c);
         }
     }
     for (var i = 0; i <= stack; i++) {
         for (var j = 0; j < step; j++) {
-            var a = i * step + j + (whitePartRaw['vertices'].length / 6) + 1;
+            var a = i * step + j + 1;
             var b = a + 1;
             var c = a + step;
             var d = a + step + 1;
             // console.log(a + " " + b + " " + c + " " + d);
-            faces.push(a, b, d, a, d, c);
+            blackFaces.push(a, b, d, a, d, c);
         }
     }
 
-    return { "vertices": vertices, "faces": faces };
+    return { "whiteVertices": whiteVertices, "blackVertices": blackVertices, "whiteFaces": whiteFaces, "blackFaces": blackFaces };
 }
 function generateNose(step) {
     var vertices = [];
@@ -1567,8 +1570,7 @@ function main() {
     var MODEL_MATRIX8 = LIBS.get_I4();
     var MODEL_MATRIX9 = LIBS.get_I4();
 
-    LIBS.translateZ(VIEW_MATRIX, -70);
-
+    
     // Richard 
     var headRaw = generateEllipsoid(1.35, 1.16, 1.1, 100, 100, 0.43, 0.89, 0.28, 0, 0, 0);
     var head = new MyObject(headRaw['vertices'], headRaw['faces'], shader_vertex_source, shader_fragment_source);
@@ -1582,12 +1584,16 @@ function main() {
     head.child.push(leftEar);
 
     var rightEyeRaw = generateRightEye(100, 100);
-    var rightEye = new MyObject(rightEyeRaw['vertices'], rightEyeRaw['faces'], shader_vertex_source, shader_fragment_source);
-    head.child.push(rightEye);
+    var rightWhiteEye = new MyObject(rightEyeRaw['whiteVertices'], rightEyeRaw['whiteFaces'], shader_vertex_source, shader_fragment_source);
+    var rightBlackEye = new MyObject(rightEyeRaw['blackVertices'], rightEyeRaw['blackFaces'], shader_vertex_source, shader_fragment_source);
+    head.child.push(rightWhiteEye);
+    head.child.push(rightBlackEye);
 
     var leftEyeRaw = generateLeftEye(100, 100);
-    var leftEye = new MyObject(leftEyeRaw['vertices'], leftEyeRaw['faces'], shader_vertex_source, shader_fragment_source);
-    head.child.push(leftEye);
+    var leftWhiteEye = new MyObject(leftEyeRaw['whiteVertices'], leftEyeRaw['whiteFaces'], shader_vertex_source, shader_fragment_source);
+    var leftBlackEye = new MyObject(leftEyeRaw['blackVertices'], leftEyeRaw['blackFaces'], shader_vertex_source, shader_fragment_source);
+    head.child.push(leftWhiteEye);
+    head.child.push(leftBlackEye);
 
     var noseRaw = generateNose(100, 100);
     var nose = new MyObject(noseRaw['vertices'], noseRaw['faces'], shader_vertex_source, shader_fragment_source);
@@ -1991,6 +1997,10 @@ function main() {
     var log4v = createBoxVertices(35,4,-25,1,9,1,0,0.388, 0.275, 0.02)
     var log4 = new MyObject(log4v,indices,shader_vertex_source,shader_fragment_source)
     
+    var slingshot = new MyObject(generateCurvedTube(0, 5, 0, 3, 0.5, 30, -160, 0.64, 0.16, 0.16), feather_faces, shader_vertex_source, shader_fragment_source);
+    var slingshot2 = new MyObject(generateCurvedTube(0, 5, 0, 3, 0.5, 30, 160, 0.64, 0.16, 0.16), feather_faces, shader_vertex_source, shader_fragment_source);
+    var slingshothandle = new MyObject(createBoxVertices(0, 0, 0, 1, 10, 1, 0, 0.64, 0.16, 0.16), indices, shader_vertex_source, shader_fragment_source);
+
     base.child.push(grass)
     base.child.push(woodblock1)
     base.child.push(woodblock2)
@@ -2057,6 +2067,9 @@ function main() {
     base.child.push(cone11)
     base.child.push(cone12)
     base.child.push(log4)
+    base.child.push(slingshot);
+    base.child.push(slingshot2);
+    base.child.push(slingshothandle);
     base.setup();
 
     /*========================= DRAWING ========================= */
@@ -2065,9 +2078,12 @@ function main() {
 
     GL.enable(GL.DEPTH_TEST);
     GL.depthFunc(GL.LEQUAL);
+    // Pig only zoom
+    LIBS.translateZ(VIEW_MATRIX, -30);
+    LIBS.translateX(VIEW_MATRIX, -50);
+    LIBS.translateY(VIEW_MATRIX, -15);
 
-    LIBS.translateZ(VIEW_MATRIX,-5)
-
+    // LIBS.translateZ(VIEW_MATRIX, -40);
     var prev_time = 0;
     var animate = function (time) {
 
@@ -2075,7 +2091,7 @@ function main() {
         GL.clear(GL.COLOR_BUFFER_BIT | GL.D_BUFFER_BIT);
         var dt = time - prev_time;
         // console.log(dt);
-        console.log(time)
+        // console.log(time)
 
         if (!drag) {
             dX *= FRICTION;
@@ -2090,12 +2106,14 @@ function main() {
         //LIBS.rotateY(MODEL_MATRIX4, THETA);
         //LIBS.rotateX(MODEL_MATRIX4, ALPHA);
         LIBS.translateY(MODEL_MATRIX4, 13.65);
-        LIBS.translateX(MODEL_MATRIX4, 51);
+        LIBS.translateX(MODEL_MATRIX4, 51); 
         head.MODEL_MATRIX = MODEL_MATRIX4;
         rightEar.MODEL_MATRIX = MODEL_MATRIX4;
         leftEar.MODEL_MATRIX = MODEL_MATRIX4;
-        rightEye.MODEL_MATRIX = MODEL_MATRIX4;
-        leftEye.MODEL_MATRIX = MODEL_MATRIX4;
+        rightWhiteEye.MODEL_MATRIX = MODEL_MATRIX4;
+        rightBlackEye.MODEL_MATRIX = MODEL_MATRIX6;
+        leftWhiteEye.MODEL_MATRIX = MODEL_MATRIX4;
+        leftBlackEye.MODEL_MATRIX = MODEL_MATRIX6;
         nose.MODEL_MATRIX = MODEL_MATRIX4;
         eyebrow.MODEL_MATRIX = MODEL_MATRIX4;
         head.render(VIEW_MATRIX, PROJECTION_MATRIX);
@@ -2135,36 +2153,42 @@ function main() {
         object.render(VIEW_MATRIX, PROJECTION_MATRIX);
         
         // Steve
-        
         //head
-        MODEL_MATRIX = LIBS.get_I4();
+        // MODEL_MATRIX = LIBS.get_I4();
         //LIBS.rotateY(MODEL_MATRIX, THETA);
         //LIBS.rotateX(MODEL_MATRIX, ALPHA);
-        LIBS.translateX(MODEL_MATRIX, -38);
-        LIBS.translateZ(MODEL_MATRIX, -5);
-        LIBS.translateY(MODEL_MATRIX, 4);
+        LIBS.translateX(MODEL_MATRIX7, -5);
+        LIBS.translateZ(MODEL_MATRIX7, 0);
+        LIBS.translateY(MODEL_MATRIX7, 10);
+        LIBS.rotateY(MODEL_MATRIX7, 1.62);
+        // //head
+        // //LIBS.rotateY(MODEL_MATRIX, THETA);
+        // //LIBS.rotateX(MODEL_MATRIX, ALPHA);
+        // LIBS.translateX(MODEL_MATRIX, -38);
+        // LIBS.translateZ(MODEL_MATRIX, -5);
+        // LIBS.translateY(MODEL_MATRIX, 4);
 
-        LIBS.rotateY(MODEL_MATRIX,1.62)
+        // LIBS.rotateY(MODEL_MATRIX,1.62)
              
-        objectS.MODEL_MATRIX = MODEL_MATRIX;
-        object2S.MODEL_MATRIX = MODEL_MATRIX;
-        object3S.MODEL_MATRIX = MODEL_MATRIX;
-        object4S.MODEL_MATRIX = MODEL_MATRIX;
-        object5S.MODEL_MATRIX = MODEL_MATRIX;
-        object6S.MODEL_MATRIX = MODEL_MATRIX;
-        object7S.MODEL_MATRIX = MODEL_MATRIX;
-        object8S.MODEL_MATRIX = MODEL_MATRIX;
-        object9S.MODEL_MATRIX = MODEL_MATRIX;
-        object10S.MODEL_MATRIX = MODEL_MATRIX;
-        object11S.MODEL_MATRIX = MODEL_MATRIX;
-        object12S.MODEL_MATRIX = MODEL_MATRIX;
-        object13S.MODEL_MATRIX = MODEL_MATRIX;
-        object14S.MODEL_MATRIX = MODEL_MATRIX;
-        object16S.MODEL_MATRIX = MODEL_MATRIX;
-        object17S.MODEL_MATRIX = MODEL_MATRIX;
-        object18S.MODEL_MATRIX = MODEL_MATRIX;
-        object19S.MODEL_MATRIX = MODEL_MATRIX;
-        object20S.MODEL_MATRIX = MODEL_MATRIX;
+        objectS.MODEL_MATRIX = MODEL_MATRIX7;
+        object2S.MODEL_MATRIX = MODEL_MATRIX7;
+        object3S.MODEL_MATRIX = MODEL_MATRIX7;
+        object4S.MODEL_MATRIX = MODEL_MATRIX7;
+        object5S.MODEL_MATRIX = MODEL_MATRIX7;
+        object6S.MODEL_MATRIX = MODEL_MATRIX7;
+        object7S.MODEL_MATRIX = MODEL_MATRIX7;
+        object8S.MODEL_MATRIX = MODEL_MATRIX7;
+        object9S.MODEL_MATRIX = MODEL_MATRIX7;
+        object10S.MODEL_MATRIX = MODEL_MATRIX7;
+        object11S.MODEL_MATRIX = MODEL_MATRIX7;
+        object12S.MODEL_MATRIX = MODEL_MATRIX7;
+        object13S.MODEL_MATRIX = MODEL_MATRIX7;
+        object14S.MODEL_MATRIX = MODEL_MATRIX7;
+        object16S.MODEL_MATRIX = MODEL_MATRIX7;
+        object17S.MODEL_MATRIX = MODEL_MATRIX7;
+        object18S.MODEL_MATRIX = MODEL_MATRIX7;
+        object19S.MODEL_MATRIX = MODEL_MATRIX7;
+        object20S.MODEL_MATRIX = MODEL_MATRIX7;
         objectS.render(VIEW_MATRIX, PROJECTION_MATRIX);
 
         // Environment
@@ -2179,59 +2203,89 @@ function main() {
 
         LIBS.rotateY(VIEW_MATRIX, THETA/200);
         LIBS.rotateX(VIEW_MATRIX, ALPHA/200);
-
-        // Combination Transformation (Translation & Rotation)
-        if (time >= 1000 && time < 3000){
-            LIBS.translateY(MODEL_MATRIX4, -13.65);
-            LIBS.translateX(MODEL_MATRIX4, -51);
-            LIBS.rotateX(MODEL_MATRIX4, - LIBS.degToRad(15) * dt /10);
-            LIBS.translateY(MODEL_MATRIX4, dt / 1000);
-            
-
-        } else if (time >= 3000 && time < 5000){
-            LIBS.translateY(MODEL_MATRIX4, -13.65);
-            LIBS.translateX(MODEL_MATRIX4, -51);
-            LIBS.rotateX(MODEL_MATRIX4, LIBS.degToRad(15) * dt / 10);
-            LIBS.translateY(MODEL_MATRIX4, - dt / 1000);
-
-        }
-        // Rotate Arbitrary Axis
-        else if (time >= 6000 && time < 10600){
-            var temp = LIBS.get_I4();
-            
-            LIBS.translateX(MODEL_MATRIX4, -13.65);
-            LIBS.translateY(MODEL_MATRIX4, -51);
-            MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
-            temp = LIBS.get_I4();
-            LIBS.rotateX(temp, LIBS.degToRad(15) * dt / 100);
-            MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
-            LIBS.rotateY(temp, LIBS.degToRad(15) * dt / 100);
-            MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
-            LIBS.rotateZ(temp, LIBS.degToRad(15) * dt / 100);
-            MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
-            temp = LIBS.get_I4();
-            
-            LIBS.translateX(MODEL_MATRIX4, 13.65);
-            LIBS.translateY(MODEL_MATRIX4, 51);
-            MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
-
-        } 
-        // Scaling
-        else if (time >=12000 && time < 14000){
-            LIBS.translateY(MODEL_MATRIX4, -13.65);
-            LIBS.translateX(MODEL_MATRIX4, -51);
-            MODEL_MATRIX4 = LIBS.scale(MODEL_MATRIX4, (dt / 5000 + 1) * 1);
-        } else if (time >= 14000 && time < 16000){
-            LIBS.translateY(MODEL_MATRIX4, -13.65);
-            LIBS.translateX(MODEL_MATRIX4, -51);    
-            MODEL_MATRIX4 = LIBS.scale(MODEL_MATRIX4, 1 / ((dt / 5000 + 1) * 1));
+        
+        if (time >= 1000 && time < 10000) {
+            LIBS.translateX(MODEL_MATRIX2, dt / 20000);
+        } else {
+            MODEL_MATRIX2 = LIBS.get_I4();
         }
         // Translate Eye
-        
-        // else {
-        //     MODEL_MATRIX = LIBS.get_I4();
-        // }
+        if (time >= 3000 && time < 5000){
+            MODEL_MATRIX4 = LIBS.get_I4();
+            LIBS.translateX(MODEL_MATRIX6, -dt / 15000);
+            LIBS.translateY(MODEL_MATRIX6, dt / 20000);
+            
 
+        } else if (time >= 5000 && time < 9000){
+            MODEL_MATRIX4 = LIBS.get_I4();
+            if (time >= 5000 && time < 7000) {
+                LIBS.translateY(MODEL_MATRIX6, -dt / 20000);
+            } else {
+                LIBS.translateX(MODEL_MATRIX6, dt / 15000);
+            }
+        }
+        // Scaling / Combination (Scaling & Translation)
+        else if (time >= 10000 && time < 12000){
+            LIBS.translateY(MODEL_MATRIX4, -13.65);
+            LIBS.translateX(MODEL_MATRIX4, -51);
+            LIBS.scale(MODEL_MATRIX4, (dt / 5000 + 1) * 1);
+            LIBS.translateY(MODEL_MATRIX4, dt / 3500);
+            MODEL_MATRIX6 = MODEL_MATRIX4;
+        } 
+        else if (time >= 12000 && time < 14000){
+            LIBS.translateY(MODEL_MATRIX4, -13.65);
+            LIBS.translateX(MODEL_MATRIX4, -51);
+            LIBS.scale(MODEL_MATRIX4, 1 / ((dt / 5000 + 1) * 1));
+            LIBS.translateY(MODEL_MATRIX4, -dt / 3500);
+            MODEL_MATRIX6 = MODEL_MATRIX4;
+        }
+        
+        // Rotation
+        else if (time >=14000 && time < 16000){
+            LIBS.translateY(MODEL_MATRIX4, -13.65);
+            LIBS.translateX(MODEL_MATRIX4, -51);
+            LIBS.rotateX(MODEL_MATRIX4, - LIBS.degToRad(15) * dt / 10)
+            MODEL_MATRIX6 = MODEL_MATRIX4;
+        } else if (time >= 17000 && time < 20000){
+            LIBS.translateY(MODEL_MATRIX4, -13.65);
+            LIBS.translateX(MODEL_MATRIX4, -51);
+            if (time >= 17700) {
+                LIBS.translateY(MODEL_MATRIX4, -dt / 100);
+                LIBS.translateX(MODEL_MATRIX4, dt / 1000);
+            } else {
+                LIBS.translateX(MODEL_MATRIX4, dt / 100);
+            }
+            LIBS.rotateZ(MODEL_MATRIX4, LIBS.degToRad(10) * dt / 10);
+
+            
+        } 
+        // // Rotate Arbitrary Axis
+        // else if (time >= 16000 && time < 20600){
+        //     LIBS.translateY(MODEL_MATRIX4, -13.65);
+        //     LIBS.translateX(MODEL_MATRIX4, -51);
+        //     var temp = LIBS.get_I4();
+        //     LIBS.translateX(temp, -2);
+        //     LIBS.translateY(temp, -2);
+        //     MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
+        //     temp = LIBS.get_I4();
+        //     LIBS.rotateX(temp, LIBS.degToRad(15) * dt / 100);
+        //     MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
+        //     LIBS.rotateY(temp, LIBS.degToRad(15) * dt / 100);
+        //     MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
+        //     LIBS.rotateZ(temp, LIBS.degToRad(15) * dt / 100);
+        //     MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
+        //     temp = LIBS.get_I4();
+
+        //     LIBS.translateX(temp, 2);
+        //     LIBS.translateY(temp, 2);
+        //     MODEL_MATRIX4 = LIBS.multiply(MODEL_MATRIX4, temp);
+        //     LIBS.translateY(MODEL_MATRIX4, -13.65);
+        //     LIBS.translateX(MODEL_MATRIX4, -51);
+        // } 
+        else {
+            MODEL_MATRIX4 = LIBS.get_I4();
+            MODEL_MATRIX6 = MODEL_MATRIX4;
+        }
         // console.log(time);
 
         //CAMERA MOVEMENTS (NOT ROTATION)
@@ -2240,19 +2294,19 @@ function main() {
             switch (event.key) {
                 case 'ArrowUp':
                     console.log('Up arrow key pressed');
-                    LIBS.translateY(VIEW_MATRIX, -0.0005);
+                    LIBS.translateY(VIEW_MATRIX, -0.05);
                     break;
                 case 'ArrowDown':
                     console.log('Down arrow key pressed');
-                    LIBS.translateY(VIEW_MATRIX, 0.0005);
+                    LIBS.translateY(VIEW_MATRIX, 0.05);
                     break;
                 case 'ArrowLeft':
                     console.log('Left arrow key pressed');
-                    LIBS.translateX(VIEW_MATRIX, 0.0005);
+                    LIBS.translateX(VIEW_MATRIX, 0.05);
                     break;
                 case 'ArrowRight':
                     console.log('Right arrow key pressed');
-                    LIBS.translateX(VIEW_MATRIX, -0.0005);
+                    LIBS.translateX(VIEW_MATRIX, -0.05);
                     break;
                 case 'w':
                     console.log('W key pressed');
